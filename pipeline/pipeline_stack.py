@@ -43,5 +43,5 @@ class PipelineStack(Stack):
 
         wave2 = code_pipeline.add_wave("wave2")
 
-        wave.add_stage(OrchestrateStreamStage(self, "DeployOrchestration"))
+        wave2.add_stage(OrchestrateStreamStage(self, "DeployOrchestration"))
 
