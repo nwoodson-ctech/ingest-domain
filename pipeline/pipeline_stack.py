@@ -6,6 +6,7 @@ from aws_cdk import (
 )
 
 from apigateway.infrastructure.apigateway_stage import ApigatewayStage
+from kinesis_stream.infrastructure.ingest_stream_stage import IngestStreamStage
 
 
 class PipelineStack(Stack):
@@ -34,5 +35,7 @@ class PipelineStack(Stack):
                                       )
         )
 
-        deploy_apigateway = ApigatewayStage(self, "DeployApigateway")
-        deploy_apigateway_stage = code_pipeline.add_stage(deploy_apigateway)
+        wave = code_pipeline.add_wave("wave")
+
+        wave.add_stage(ApigatewayStage(self, "DeployApigateway"))
+        wave.add_stage(IngestStreamStage(self, "DeployIngestStream"))
