@@ -7,6 +7,7 @@ from aws_cdk import (
 
 from apigateway.infrastructure.apigateway_stage import ApigatewayStage
 from kinesis_stream.infrastructure.ingest_stream_stage import IngestStreamStage
+from orchestration.lambda_function.infrastructure.orchestrate_stream_stage import OrchestrateStreamStage
 
 
 class PipelineStack(Stack):
@@ -39,3 +40,8 @@ class PipelineStack(Stack):
 
         wave.add_stage(ApigatewayStage(self, "DeployApigateway"))
         wave.add_stage(IngestStreamStage(self, "DeployIngestStream"))
+
+        wave2 = code_pipeline.add_wave("wave2")
+
+        wave.add_stage(OrchestrateStreamStage(self, "DeployOrchestration"))
+
