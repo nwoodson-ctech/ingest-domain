@@ -16,10 +16,12 @@ def handler(event: SQSEvent, context: LambdaContext) -> str:
     for record in event.records:
         data = record.body
 
+        logger.info(data)
+
         add_player_event = {
             'Source': 'ingest-api',
             'DetailType': 'player',
-            'Detail': json.dumps(data),
+            'Detail': data,
             'EventBusName': 'CoreEventBus'
         }
 
