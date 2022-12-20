@@ -36,7 +36,7 @@ class OrchestrateSQSStack(Stack):
             "ImportIngestSQS",
             "arn:aws:sqs:us-east-1:499104388492:ingest-sqs-stack-1029")
 
-        ingest_sqs.grant_send_messages(orchestration)
+        ingest_sqs.grant_read_messages(orchestration)
 
         event_source_mapping = lambda_.EventSourceMapping(
             self,
