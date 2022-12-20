@@ -42,5 +42,4 @@ class OrchestrateSQSStack(Stack):
             self,
             "IngestSQSEventSourceMapping",
             target=orchestration,
-            event_source_arn="arn:aws:sqs:us-east-1:499104388492:ingest-sqs-stack-1029",
-            starting_position=lambda_.StartingPosition.TRIM_HORIZON)
+            event_source_arn="arn:aws:sqs:us-east-1:499104388492:ingest-sqs-stack-1029")
