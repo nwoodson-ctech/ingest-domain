@@ -9,7 +9,7 @@ from apigateway.infrastructure.apigateway_stage import ApigatewayStage
 from kinesis_stream.infrastructure.ingest_stream_stage import IngestStreamStage
 from orchestration.lambda_function.infrastructure.orchestrate_stream_stage import OrchestrateStreamStage
 from sqs.infrastructure.ingest_sqs_stage import IngestSQSStage
-
+from orchestration.lambda_function.infrastructure.orchestrate_sqs_stage import OrchestrateSQSStage
 
 class PipelineStack(Stack):
 
@@ -46,4 +46,5 @@ class PipelineStack(Stack):
         wave2 = code_pipeline.add_wave("wave2")
 
         wave2.add_stage(OrchestrateStreamStage(self, "DeployOrchestration"))
+        wave2.add_stage(OrchestrateSQSStage(self, "DeployOrchestrateSQS"))
 

@@ -31,12 +31,12 @@ class OrchestrateSQSStack(Stack):
         ### Grant Orchestration permissions for Core Event Bus put events ###
         core_event_bus.grant_put_events_to(orchestration)
 
-        ingest_stream = sqs.Queue.from_queue_arn(
+        ingest_sqs = sqs.Queue.from_queue_arn(
             self,
             "ImportIngestSQS",
             "arn:aws:sqs:us-east-1:499104388492:ingest-sqs-stack-1029")
 
-        ingest_stream.grant_read(orchestration)
+        ingest_sqs.grant_send_messages(orchestration)
 
         event_source_mapping = lambda_.EventSourceMapping(
             self,
