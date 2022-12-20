@@ -44,4 +44,5 @@ class OrchestrateStreamStack(Stack):
             self,
             "MyEventSourceMapping",
             target=orchestration,
-            event_source_arn="arn:aws:kinesis:us-east-1:499104388492:stream/ingest-stream")
+            event_source_arn="arn:aws:kinesis:us-east-1:499104388492:stream/ingest-stream",
+            starting_position=lambda_.StartingPosition.TRIM_HORIZON)

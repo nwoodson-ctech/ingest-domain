@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 boto3 = "*"
+"aws-cdk.aws-apigatewayv2-alpha" = "*"
+"aws-cdk.aws-apigatewayv2-integrations-alpha" = "*"
 
 [dev-packages]
 
