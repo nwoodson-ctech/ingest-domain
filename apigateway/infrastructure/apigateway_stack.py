@@ -1,19 +1,13 @@
-
-from constructs import Construct
 from aws_cdk import (
     Stack,
-    aws_events_targets as target,
-    aws_lambda as _lambda,
-    Duration,
     aws_iam as iam,
     aws_apigatewayv2 as apigatewayv2,
     aws_apigatewayv2_alpha as apigatewayv2_alpha,
-    aws_apigatewayv2_integrations_alpha as http_lambda_integration,
-    CfnOutput,
     aws_events as events,
-    aws_lambda_python_alpha as python
+    aws_lambda_python_alpha as python,
+    aws_apigatewayv2_integrations_alpha as websocket_lambda_integration
 )
-import os
+from constructs import Construct
 
 
 class ApigatewayStack(Stack):
@@ -105,7 +99,7 @@ class ApigatewayStack(Stack):
         ### Create ApiGateway Integration Need to work on naming here once it works ###
         http_api_cfn_integration_read_player = apigatewayv2.CfnIntegration(self,
                                                                            "ReadPlayerLambdaHttpApiIntegrationPlayer",
-                                                                           api_id=http_api.api_id,
+                                                                            api_id=http_api.api_id,
                                                                            integration_method="POST",
                                                                            integration_type="AWS_PROXY",
                                                                            integration_uri="arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:499104388492:function:ReadPlayer/invocations",
@@ -122,3 +116,20 @@ class ApigatewayStack(Stack):
                                                                target="integrations/{}".format(
                                                                    http_api_cfn_integration_read_player.ref)
                                                                )
+
+        send_update_player_event_lambda = python.PythonFunction.from_function_name(
+            self, "SendUpdatePlayerEvent", "SendUpdatePlayerEvent")
+
+        web_socket_api = apigatewayv2_alpha.WebSocketApi(self, "tglwsapi")
+
+        apigatewayv2_alpha.WebSocketStage(self, "test-tglwsapi",
+                                          web_socket_api=web_socket_api,
+                                          stage_name="dev",
+                                          auto_deploy=True
+                                          )
+
+        web_socket_api.add_route("send-update-player",
+                                 integration=websocket_lambda_integration.WebSocketLambdaIntegration(
+                                     "SendUpdatePlayerIntegration",
+                                     send_update_player_event_lambda)
+                                 )
