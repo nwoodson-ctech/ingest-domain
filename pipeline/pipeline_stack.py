@@ -10,6 +10,7 @@ from kinesis_stream.infrastructure.ingest_stream_stage import IngestStreamStage
 from orchestration.lambda_function.infrastructure.orchestrate_stream_stage import OrchestrateStreamStage
 from sqs.infrastructure.ingest_sqs_stage import IngestSQSStage
 from orchestration.lambda_function.infrastructure.orchestrate_sqs_stage import OrchestrateSQSStage
+from orchestration.lambda_function.infrastructure.send_update_player_stage import SendUpdatePlayerEventStage
 
 class PipelineStack(Stack):
 
@@ -47,4 +48,5 @@ class PipelineStack(Stack):
 
         wave2.add_stage(OrchestrateStreamStage(self, "DeployOrchestration"))
         wave2.add_stage(OrchestrateSQSStage(self, "DeployOrchestrateSQS"))
+        wave2.add_stage(SendUpdatePlayerEventStage(self, "DeploySendUpdatePlayerEvent"))
 
